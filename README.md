@@ -72,6 +72,13 @@ Use the laptop-light path first:
 
 The UI reads `VITE_NIDARYX_API_URL` when deployed and can run in local telemetry mode if the API is unavailable.
 
+To read real Prometheus metrics in `/ops/state`, set:
+
+```bash
+NIDARYX_LIVE_TELEMETRY=true
+NIDARYX_PROMETHEUS_URL=https://<prometheus-host>
+```
+
 The dependency-free domain tests can run before installing third-party packages:
 
 ```bash

@@ -74,9 +74,11 @@ export interface TelemetrySignal {
 }
 
 export interface OpsState {
-  scenario: "healthy" | "db_pool_saturation";
+  scenario: "healthy" | "db_pool_saturation" | "live_prometheus";
   active: boolean;
   services: ServiceHealth[];
   signals: TelemetrySignal[];
   incident: Incident | null;
+  telemetry_source?: "prometheus" | "incident_drill";
+  telemetry_error?: string;
 }

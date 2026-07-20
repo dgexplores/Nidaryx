@@ -7,6 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from nidaryx_common.settings import ServiceSettings
 from nidaryx_intelligence.demo_data import sample_incident_payload
+from nidaryx_telemetry.prometheus import PrometheusClient, PrometheusQuery, TelemetryQueryError
 
 settings = ServiceSettings.from_env("api-gateway")
 app = FastAPI(
@@ -60,9 +61,89 @@ _degraded_signals = [
     {"name": "db_pool_utilization", "value": "96%", "baseline": "< 70%", "state": "degraded"},
 ]
 
+_signal_baselines = {
+    "request_rate": "100-140 req/min",
+    "p95_latency_ms": "< 180 ms",
+    "error_rate": "< 1.0%",
+    "db_pool_utilization": "< 70%",
+}
+_signal_queries = {
+    "request_rate": os.getenv(
+        "NIDARYX_QUERY_REQUEST_RATE",
+        'sum(rate(http_requests_total{service=~"api-gateway|checkout-api|order-service"}[5m])) * 60',
+    ),
+    "p95_latency_ms": os.getenv(
+        "NIDARYX_QUERY_P95_LATENCY_MS",
+        'histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket{service=~"api-gateway|checkout-api|order-service"}[5m])) by (le)) * 1000',
+    ),
+    "error_rate": os.getenv(
+        "NIDARYX_QUERY_ERROR_RATE",
+        'sum(rate(http_requests_total{service=~"api-gateway|checkout-api|order-service",status=~"5.."}[5m])) / clamp_min(sum(rate(http_requests_total{service=~"api-gateway|checkout-api|order-service"}[5m])), 1)',
+    ),
+    "db_pool_utilization": os.getenv(
+        "NIDARYX_QUERY_DB_POOL_UTILIZATION",
+        'max(mongodb_pool_in_use_connections / clamp_min(mongodb_pool_max_connections, 1))',
+    ),
+}
+_signal_thresholds = {
+    "p95_latency_ms": 180.0,
+    "error_rate": 0.01,
+    "db_pool_utilization": 0.70,
+}
+
 
 def _is_incident_active() -> bool:
     return _active_scenario != "healthy"
+
+
+def _live_telemetry_enabled() -> bool:
+    return os.getenv("NIDARYX_LIVE_TELEMETRY", "false").lower() == "true"
+
+
+def _first_value(client: PrometheusClient, name: str) -> float | None:
+    samples = client.instant_query(PrometheusQuery(_signal_queries[name]))
+    return samples[0].value if samples else None
+
+
+def _format_signal(name: str, value: float | None) -> dict[str, object]:
+    if value is None:
+        return {"name": name, "value": "missing", "baseline": _signal_baselines[name], "state": "stale"}
+    if name == "request_rate":
+        formatted = f"{value:.0f} req/min"
+    elif name == "p95_latency_ms":
+        formatted = f"{value:.0f} ms"
+    else:
+        formatted = f"{value * 100:.1f}%"
+    threshold = _signal_thresholds.get(name)
+    state = "degraded" if threshold is not None and value > threshold else "live"
+    return {"name": name, "value": formatted, "baseline": _signal_baselines[name], "state": state}
+
+
+def _prometheus_ops_state() -> dict[str, object]:
+    client = PrometheusClient(settings.prometheus_url)
+    values = {name: _first_value(client, name) for name in _signal_queries}
+    signals = [_format_signal(name, values[name]) for name in _signal_queries]
+    active = any(signal["state"] == "degraded" for signal in signals)
+    return {
+        "scenario": "live_prometheus" if active else "healthy",
+        "active": active,
+        "services": _degraded_services if active else _healthy_services,
+        "signals": signals,
+        "incident": sample_incident_payload() if active else None,
+        "telemetry_source": "prometheus",
+    }
+
+
+def _drill_ops_state() -> dict[str, object]:
+    incident = sample_incident_payload() if _is_incident_active() else None
+    return {
+        "scenario": _active_scenario,
+        "active": _is_incident_active(),
+        "services": _degraded_services if _is_incident_active() else _healthy_services,
+        "signals": _degraded_signals if _is_incident_active() else _healthy_signals,
+        "incident": incident,
+        "telemetry_source": "incident_drill",
+    }
 
 
 @app.get("/")
@@ -126,14 +207,15 @@ def models() -> dict[str, object]:
 
 @app.get("/ops/state")
 def ops_state() -> dict[str, object]:
-    incident = sample_incident_payload() if _is_incident_active() else None
-    return {
-        "scenario": _active_scenario,
-        "active": _is_incident_active(),
-        "services": _degraded_services if _is_incident_active() else _healthy_services,
-        "signals": _degraded_signals if _is_incident_active() else _healthy_signals,
-        "incident": incident,
-    }
+    if _live_telemetry_enabled():
+        try:
+            return _prometheus_ops_state()
+        except TelemetryQueryError as exc:
+            state = _drill_ops_state()
+            state["telemetry_source"] = "incident_drill"
+            state["telemetry_error"] = str(exc)
+            return state
+    return _drill_ops_state()
 
 
 @app.post("/ops/scenario")

@@ -53,4 +53,24 @@ The UI can run in local telemetry mode if the API is sleeping.
 7. Show recommendation: investigation before approval-gated remediation.
 8. Show `/ops/state` API JSON from Render.
 
+## Live Telemetry Mode
+
+Set these on the API service when Prometheus is available:
+
+```text
+NIDARYX_LIVE_TELEMETRY=true
+NIDARYX_PROMETHEUS_URL=https://<prometheus-host>
+```
+
+Optional query overrides:
+
+```text
+NIDARYX_QUERY_REQUEST_RATE
+NIDARYX_QUERY_P95_LATENCY_MS
+NIDARYX_QUERY_ERROR_RATE
+NIDARYX_QUERY_DB_POOL_UTILIZATION
+```
+
+`/ops/state` uses Prometheus first in live mode. If Prometheus is unavailable, the incident drill remains available so the presentation does not fail.
+
 Skipped: full Docker observability stack. Add after the live showcase is stable.
