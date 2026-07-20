@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 
-from tracesentry_contracts import (
+from nidaryx_contracts import (
     DataQuality,
     DataQualityState,
     FeatureVector,

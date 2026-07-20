@@ -3,12 +3,12 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
-from tracesentry_intelligence.anomaly import BaselineDetector, BaselineProfile
-from tracesentry_intelligence.correlation import IncidentCorrelator
-from tracesentry_intelligence.demo_data import default_graph, default_runbooks, sample_feature_vectors
-from tracesentry_intelligence.memory import IncidentMemoryIndex
-from tracesentry_intelligence.rca import RCARanker
-from tracesentry_intelligence.recommendations import RecommendationEngine
+from nidaryx_intelligence.anomaly import BaselineDetector, BaselineProfile
+from nidaryx_intelligence.correlation import IncidentCorrelator
+from nidaryx_intelligence.demo_data import default_graph, default_runbooks, sample_feature_vectors
+from nidaryx_intelligence.memory import IncidentMemoryIndex
+from nidaryx_intelligence.rca import RCARanker
+from nidaryx_intelligence.recommendations import RecommendationEngine
 
 
 class MemoryRecommendationTests(unittest.TestCase):

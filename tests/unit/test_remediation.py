@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import unittest
 
-from tracesentry_contracts import RemediationDecision, Role
-from tracesentry_intelligence.demo_data import default_runbooks
-from tracesentry_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
+from nidaryx_contracts import RemediationDecision, Role
+from nidaryx_intelligence.demo_data import default_runbooks
+from nidaryx_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
 
 
 class RemediationPolicyTests(unittest.TestCase):

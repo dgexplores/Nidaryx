@@ -4,11 +4,11 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI, Response
 
-from tracesentry_common.settings import ServiceSettings
-from tracesentry_intelligence.demo_data import sample_feature_vectors
+from nidaryx_common.settings import ServiceSettings
+from nidaryx_intelligence.demo_data import sample_feature_vectors
 
 settings = ServiceSettings.from_env("feature-service")
-app = FastAPI(title="TraceSentry Feature Service", version="0.1.0")
+app = FastAPI(title="Nidaryx Feature Service", version="0.1.0")
 
 
 @app.get("/health")
@@ -24,7 +24,7 @@ def ready() -> dict[str, object]:
 @app.get("/metrics")
 def metrics() -> Response:
     return Response(
-        f'tracesentry_service_ready{{service="{settings.service_name}"}} 1\n',
+        f'nidaryx_service_ready{{service="{settings.service_name}"}} 1\n',
         media_type="text/plain; version=0.0.4",
     )
 

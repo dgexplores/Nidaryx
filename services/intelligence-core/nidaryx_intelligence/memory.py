@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tracesentry_contracts import AnomalyEvent, Incident, SimilarIncident
+from nidaryx_contracts import AnomalyEvent, Incident, SimilarIncident
 
 
 @dataclass(frozen=True)

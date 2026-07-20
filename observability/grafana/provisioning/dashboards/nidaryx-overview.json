@@ -40,11 +40,11 @@
   ],
   "refresh": "10s",
   "schemaVersion": 39,
-  "tags": ["tracesentry"],
+  "tags": ["nidaryx"],
   "templating": { "list": [] },
   "time": { "from": "now-30m", "to": "now" },
-  "title": "TraceSentry Overview",
-  "uid": "tracesentry-overview",
+  "title": "Nidaryx Overview",
+  "uid": "nidaryx-overview",
   "version": 1,
   "weekStart": ""
 }

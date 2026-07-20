@@ -1,7 +1,7 @@
-# TraceSentry Coding-Agent Operating Guide
+# Nidaryx Coding-Agent Operating Guide
 
 ## Mission
-Build TraceSentry incrementally as a reliable, explainable, and safe AI-assisted SRE platform. Treat structured telemetry and versioned evidence as the source of truth. Never make broad speculative rewrites.
+Build Nidaryx incrementally as a reliable, explainable, and safe AI-assisted SRE platform. Treat structured telemetry and versioned evidence as the source of truth. Never make broad speculative rewrites.
 
 ## Mandatory workflow for every task
 1. Read the relevant architecture, contract, implementation, and test files.

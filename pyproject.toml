@@ -1,11 +1,11 @@
 [project]
-name = "tracesentry"
+name = "nidaryx"
 version = "0.1.0"
 description = "AI-assisted observability and incident-response platform for microservice environments."
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "Proprietary" }
-authors = [{ name = "TraceSentry Contributors" }]
+authors = [{ name = "Nidaryx Contributors" }]
 dependencies = [
   "fastapi>=0.115.0",
   "uvicorn[standard]>=0.30.0",

@@ -1,6 +1,6 @@
 # Security And Remediation
 
-TraceSentry uses a strict approval and allow-list model.
+Nidaryx uses a strict approval and allow-list model.
 
 ## Rules
 

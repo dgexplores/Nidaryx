@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from tracesentry_common.ids import stable_id
-from tracesentry_contracts import AnomalyEvent, Incident, IncidentStatus, Severity
+from nidaryx_common.ids import stable_id
+from nidaryx_contracts import AnomalyEvent, Incident, IncidentStatus, Severity
 
 from .service_catalog import DependencyGraph
 

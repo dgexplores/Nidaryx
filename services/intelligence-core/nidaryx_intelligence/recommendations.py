@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tracesentry_contracts import Incident, Recommendation, RecommendationType, RunbookAction, SimilarIncident
+from nidaryx_contracts import Incident, Recommendation, RecommendationType, RunbookAction, SimilarIncident
 
 
 class RecommendationEngine:

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from tracesentry_common.ids import stable_id
-from tracesentry_contracts import (
+from nidaryx_common.ids import stable_id
+from nidaryx_contracts import (
     AnomalyEvent,
     ContributingFeature,
     FeatureVector,

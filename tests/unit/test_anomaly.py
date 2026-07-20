@@ -3,8 +3,8 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from tracesentry_contracts import DataQuality, DataQualityState, FeatureVector, Severity, TelemetryWindow
-from tracesentry_intelligence.anomaly import BaselineDetector, BaselineProfile
+from nidaryx_contracts import DataQuality, DataQualityState, FeatureVector, Severity, TelemetryWindow
+from nidaryx_intelligence.anomaly import BaselineDetector, BaselineProfile
 
 
 class BaselineDetectorTests(unittest.TestCase):

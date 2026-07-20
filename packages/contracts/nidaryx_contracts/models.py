@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from enum import StrEnum
 from typing import Any
 
-CONTRACT_VERSION = "tracesentry.contracts.v1"
+CONTRACT_VERSION = "nidaryx.contracts.v1"
 
 
 class IncidentStatus(StrEnum):

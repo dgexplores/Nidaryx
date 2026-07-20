@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from tracesentry_contracts import AnomalyEvent, EvidenceScore, Incident, RCACandidate
+from nidaryx_contracts import AnomalyEvent, EvidenceScore, Incident, RCACandidate
 
 from .service_catalog import DependencyGraph
 

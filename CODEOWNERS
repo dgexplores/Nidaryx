@@ -1,6 +1,6 @@
-* @tracesentry/platform
-/apps/web-ui/ @tracesentry/frontend
-/services/intelligence-core/ @tracesentry/ml-platform
-/runbooks/ @tracesentry/sre
-/observability/ @tracesentry/sre
+* @nidaryx/platform
+/apps/web-ui/ @nidaryx/frontend
+/services/intelligence-core/ @nidaryx/ml-platform
+/runbooks/ @nidaryx/sre
+/observability/ @nidaryx/sre
 
