@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from nidaryx_common.settings import ServiceSettings
 from nidaryx_intelligence.demo_data import sample_incident_payload
@@ -11,6 +14,30 @@ app = FastAPI(
     version="0.1.0",
     description="Incident-facing facade for Nidaryx workflows.",
 )
+allowed_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "CORS_ALLOWED_ORIGINS",
+        "http://localhost:5173,http://localhost:8080",
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=False,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/")
+def index() -> dict[str, object]:
+    return {
+        "name": "Nidaryx",
+        "mode": "showcase",
+        "links": ["/health", "/ready", "/incidents", "/models"],
+    }
 
 
 @app.get("/health")

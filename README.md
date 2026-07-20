@@ -54,6 +54,16 @@ make lint
 docker compose --profile demo up --build
 ```
 
+## Showcase Deployment
+
+Use the laptop-light path first:
+
+- Backend: Render free web service using `render.yaml`
+- Frontend: Netlify static site using `netlify.toml`
+- Guide: `docs/showcase.md`
+
+The UI reads `VITE_NIDARYX_API_URL` when deployed and falls back to demo data if the API is asleep.
+
 The dependency-free domain tests can run before installing third-party packages:
 
 ```bash
@@ -72,4 +82,3 @@ python3 -m unittest discover -s tests/unit -p "test_*.py"
 ## Current Milestone
 
 Phase 0/1 foundation is implemented with representative Phase 3-7 core logic. The next bounded milestones are MongoDB repositories, Prometheus-backed feature collection, FastAPI integration tests, and full Docker health checks.
-

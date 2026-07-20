@@ -32,6 +32,9 @@ build/
 *.egg-info/
 node_modules/
 apps/web-ui/dist/
+*.tsbuildinfo
+apps/web-ui/vite.config.js
+apps/web-ui/vite.config.d.ts
 coverage/
 *.log
 ml/registry/artifacts/

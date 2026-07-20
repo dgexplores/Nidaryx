@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: nidaryx-api
+    runtime: python
+    plan: free
+    buildCommand: python -m pip install -r requirements-cloud.txt
+    startCommand: PYTHONPATH=packages/contracts:packages/common-python:packages/telemetry-client:services/intelligence-core uvicorn app.main:app --app-dir apps/api-gateway --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: NIDARYX_ENV
+        value: showcase
+      - key: NIDARYX_FEATURE_SCHEMA_VERSION
+        value: feature-schema.v1
+      - key: NIDARYX_MODEL_VERSION
+        value: baseline-statistical.v1
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+
