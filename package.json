@@ -6,10 +6,10 @@
     "apps/web-ui"
   ],
   "scripts": {
+    "demo": "bash scripts/start_demo.sh",
     "web:dev": "npm --workspace apps/web-ui run dev",
     "web:build": "npm --workspace apps/web-ui run build",
     "web:lint": "npm --workspace apps/web-ui run lint",
     "web:typecheck": "npm --workspace apps/web-ui run typecheck"
   }
 }
-

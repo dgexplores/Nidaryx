@@ -45,6 +45,14 @@ docs/                Product and engineering documentation
 
 ## Local Development
 
+Showcase mode:
+
+```bash
+npm run demo
+```
+
+Then open `http://127.0.0.1:5173`.
+
 ```bash
 cp .env.example .env
 python3 -m pip install -e ".[dev]"
