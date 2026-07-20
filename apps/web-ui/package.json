@@ -6,8 +6,11 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1 --port 5173 --strictPort",
     "build": "tsc -b && vite build",
+    "web:build": "npm run build",
     "typecheck": "tsc -b --noEmit",
+    "web:typecheck": "npm run typecheck",
     "lint": "eslint .",
+    "web:lint": "npm run lint",
     "preview": "vite preview --host 127.0.0.1 --port 5173 --strictPort"
   },
   "dependencies": {
