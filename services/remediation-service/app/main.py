@@ -2,13 +2,13 @@ from __future__ import annotations
 
 from fastapi import FastAPI, Response
 
-from aegisops_common.settings import ServiceSettings
-from aegisops_contracts import Role, to_primitive
-from aegisops_intelligence.demo_data import default_runbooks
-from aegisops_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
+from tracesentry_common.settings import ServiceSettings
+from tracesentry_contracts import Role, to_primitive
+from tracesentry_intelligence.demo_data import default_runbooks
+from tracesentry_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
 
 settings = ServiceSettings.from_env("remediation-service")
-app = FastAPI(title="AegisOps Remediation Service", version="0.1.0")
+app = FastAPI(title="TraceSentry Remediation Service", version="0.1.0")
 policy = RemediationPolicy(RunbookRegistry(default_runbooks()))
 
 
@@ -25,7 +25,7 @@ def ready() -> dict[str, object]:
 @app.get("/metrics")
 def metrics() -> Response:
     return Response(
-        f'aegisops_service_ready{{service="{settings.service_name}"}} 1\n',
+        f'tracesentry_service_ready{{service="{settings.service_name}"}} 1\n',
         media_type="text/plain; version=0.0.4",
     )
 

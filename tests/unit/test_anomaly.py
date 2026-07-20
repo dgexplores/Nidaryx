@@ -3,8 +3,8 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from aegisops_contracts import DataQuality, DataQualityState, FeatureVector, Severity, TelemetryWindow
-from aegisops_intelligence.anomaly import BaselineDetector, BaselineProfile
+from tracesentry_contracts import DataQuality, DataQualityState, FeatureVector, Severity, TelemetryWindow
+from tracesentry_intelligence.anomaly import BaselineDetector, BaselineProfile
 
 
 class BaselineDetectorTests(unittest.TestCase):

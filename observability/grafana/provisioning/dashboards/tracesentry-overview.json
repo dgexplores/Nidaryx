@@ -40,11 +40,11 @@
   ],
   "refresh": "10s",
   "schemaVersion": 39,
-  "tags": ["aegisops"],
+  "tags": ["tracesentry"],
   "templating": { "list": [] },
   "time": { "from": "now-30m", "to": "now" },
-  "title": "AegisOps Overview",
-  "uid": "aegisops-overview",
+  "title": "TraceSentry Overview",
+  "uid": "tracesentry-overview",
   "version": 1,
   "weekStart": ""
 }

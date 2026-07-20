@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from aegisops_contracts import AnomalyEvent, EvidenceScore, Incident, RCACandidate
+from tracesentry_contracts import AnomalyEvent, EvidenceScore, Incident, RCACandidate
 
 from .service_catalog import DependencyGraph
 

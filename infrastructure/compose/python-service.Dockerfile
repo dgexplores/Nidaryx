@@ -17,5 +17,5 @@ RUN python -m pip install --upgrade pip \
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "cd /app/${AEGISOPS_SERVICE_DIR:-apps/api-gateway} && uvicorn app.main:app --host 0.0.0.0 --port 8080"]
+CMD ["sh", "-c", "cd /app/${TRACESENTRY_SERVICE_DIR:-apps/api-gateway} && uvicorn app.main:app --host 0.0.0.0 --port 8080"]
 

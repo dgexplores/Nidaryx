@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import defaultdict, deque
 from collections.abc import Iterable
 
-from aegisops_contracts import ServiceDependency
+from tracesentry_contracts import ServiceDependency
 
 
 class DependencyGraph:

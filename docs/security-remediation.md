@@ -1,6 +1,6 @@
 # Security And Remediation
 
-AegisOps uses a strict approval and allow-list model.
+TraceSentry uses a strict approval and allow-list model.
 
 ## Rules
 

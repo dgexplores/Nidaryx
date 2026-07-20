@@ -18,7 +18,7 @@ export function AppShell({ children }: AppShellProps) {
       <aside className="sidebar" aria-label="Primary">
         <div className="brand">
           <span className="brand-mark" aria-hidden="true">AO</span>
-          <span>AegisOps</span>
+          <span>TraceSentry</span>
         </div>
         <nav className="nav-list">
           {navItems.map((item, index) => {

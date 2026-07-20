@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import unittest
 
-from aegisops_contracts import RemediationDecision, Role
-from aegisops_intelligence.demo_data import default_runbooks
-from aegisops_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
+from tracesentry_contracts import RemediationDecision, Role
+from tracesentry_intelligence.demo_data import default_runbooks
+from tracesentry_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
 
 
 class RemediationPolicyTests(unittest.TestCase):

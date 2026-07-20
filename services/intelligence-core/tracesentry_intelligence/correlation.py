@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
-from aegisops_common.ids import stable_id
-from aegisops_contracts import AnomalyEvent, Incident, IncidentStatus, Severity
+from tracesentry_common.ids import stable_id
+from tracesentry_contracts import AnomalyEvent, Incident, IncidentStatus, Severity
 
 from .service_catalog import DependencyGraph
 

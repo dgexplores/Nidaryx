@@ -4,7 +4,7 @@ PYTHONPATH := packages/contracts:packages/common-python:packages/telemetry-clien
 .PHONY: help install test lint typecheck compose-config compose-up compose-down
 
 help:
-	@printf "AegisOps commands:\\n"
+	@printf "TraceSentry commands:\\n"
 	@printf "  make install         Install Python and web dependencies\\n"
 	@printf "  make test            Run Python unit tests\\n"
 	@printf "  make lint            Run Ruff lint/format checks\\n"

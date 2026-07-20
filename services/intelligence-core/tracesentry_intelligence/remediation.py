@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Protocol
 
-from aegisops_common.ids import stable_id
-from aegisops_contracts import (
+from tracesentry_common.ids import stable_id
+from tracesentry_contracts import (
     AuditRecord,
     RemediationDecision,
     Role,

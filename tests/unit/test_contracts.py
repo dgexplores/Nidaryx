@@ -3,7 +3,7 @@ from __future__ import annotations
 import unittest
 from datetime import datetime, timedelta, timezone
 
-from aegisops_contracts import (
+from tracesentry_contracts import (
     DataQuality,
     DataQualityState,
     FeatureVector,

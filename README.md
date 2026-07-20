@@ -1,6 +1,6 @@
-# AegisOps
+# TraceSentry
 
-AegisOps is an AI-assisted observability and incident-response platform for microservice environments. It turns telemetry windows, anomaly evidence, service topology, historical incidents, and approved runbooks into correlated incidents, ranked probable root causes, similar-case retrieval, and human-approved remediation workflows.
+TraceSentry is an AI-assisted observability and incident-response platform for microservice environments. It turns telemetry windows, anomaly evidence, service topology, historical incidents, and approved runbooks into correlated incidents, ranked probable root causes, similar-case retrieval, and human-approved remediation workflows.
 
 This repository is built from the v2.0 documentation pack in `docs/source/`. The current implementation establishes the production-grade monorepo foundation, typed contracts, reusable intelligence core, service/API boundaries, web UI shell, Docker Compose topology, and repeatable unit tests.
 

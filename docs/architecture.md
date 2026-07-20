@@ -1,4 +1,4 @@
-# AegisOps Architecture
+# TraceSentry Architecture
 
 The repository follows the v2.0 architecture pack in `docs/source/`. Raw observability remains separate from incident intelligence so metrics, logs, and traces continue operating even if scoring or RCA services are degraded.
 

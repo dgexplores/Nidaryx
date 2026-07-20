@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from aegisops_common.ids import stable_id
-from aegisops_contracts import (
+from tracesentry_common.ids import stable_id
+from tracesentry_contracts import (
     AnomalyEvent,
     ContributingFeature,
     FeatureVector,

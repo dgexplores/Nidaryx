@@ -1,5 +1,5 @@
 {
-  "name": "@aegisops/web-ui",
+  "name": "@tracesentry/web-ui",
   "private": true,
   "version": "0.1.0",
   "type": "module",

@@ -3,12 +3,12 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
-from aegisops_intelligence.anomaly import BaselineDetector, BaselineProfile
-from aegisops_intelligence.correlation import IncidentCorrelator
-from aegisops_intelligence.demo_data import default_graph, default_runbooks, sample_feature_vectors
-from aegisops_intelligence.memory import IncidentMemoryIndex
-from aegisops_intelligence.rca import RCARanker
-from aegisops_intelligence.recommendations import RecommendationEngine
+from tracesentry_intelligence.anomaly import BaselineDetector, BaselineProfile
+from tracesentry_intelligence.correlation import IncidentCorrelator
+from tracesentry_intelligence.demo_data import default_graph, default_runbooks, sample_feature_vectors
+from tracesentry_intelligence.memory import IncidentMemoryIndex
+from tracesentry_intelligence.rca import RCARanker
+from tracesentry_intelligence.recommendations import RecommendationEngine
 
 
 class MemoryRecommendationTests(unittest.TestCase):

@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from fastapi import FastAPI, Response
 
-from aegisops_common.settings import ServiceSettings
+from tracesentry_common.settings import ServiceSettings
 
 settings = ServiceSettings.from_env("order-service")
-app = FastAPI(title="AegisOps Order Service", version="0.1.0")
+app = FastAPI(title="TraceSentry Order Service", version="0.1.0")
 
 
 @app.get("/health")
@@ -21,7 +21,7 @@ def ready() -> dict[str, object]:
 @app.get("/metrics")
 def metrics() -> Response:
     return Response(
-        f'aegisops_service_ready{{service="{settings.service_name}"}} 1\n',
+        f'tracesentry_service_ready{{service="{settings.service_name}"}} 1\n',
         media_type="text/plain; version=0.0.4",
     )
 

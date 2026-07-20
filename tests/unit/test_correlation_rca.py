@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import unittest
 
-from aegisops_intelligence.anomaly import BaselineDetector, BaselineProfile
-from aegisops_intelligence.correlation import IncidentCorrelator
-from aegisops_intelligence.demo_data import default_graph, sample_feature_vectors
-from aegisops_intelligence.rca import RCARanker
+from tracesentry_intelligence.anomaly import BaselineDetector, BaselineProfile
+from tracesentry_intelligence.correlation import IncidentCorrelator
+from tracesentry_intelligence.demo_data import default_graph, sample_feature_vectors
+from tracesentry_intelligence.rca import RCARanker
 
 
 class CorrelationAndRCATests(unittest.TestCase):

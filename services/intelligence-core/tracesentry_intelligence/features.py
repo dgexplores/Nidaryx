@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
-from aegisops_contracts import DataQuality, DataQualityState, FeatureVector, TelemetryWindow
+from tracesentry_contracts import DataQuality, DataQualityState, FeatureVector, TelemetryWindow
 
 
 @dataclass(frozen=True)

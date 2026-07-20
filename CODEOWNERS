@@ -1,6 +1,6 @@
-* @aegisops/platform
-/apps/web-ui/ @aegisops/frontend
-/services/intelligence-core/ @aegisops/ml-platform
-/runbooks/ @aegisops/sre
-/observability/ @aegisops/sre
+* @tracesentry/platform
+/apps/web-ui/ @tracesentry/frontend
+/services/intelligence-core/ @tracesentry/ml-platform
+/runbooks/ @tracesentry/sre
+/observability/ @tracesentry/sre
 
