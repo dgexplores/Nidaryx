@@ -15,9 +15,9 @@ export function IncidentTable({ incident, services }: IncidentTableProps) {
           <p className="eyebrow">Incident Queue</p>
           <h2 id="incident-queue-title">Active operational risk</h2>
         </div>
-        <button className="icon-button" aria-label="Open incident detail">
+        <a className="icon-button" href="#rca" aria-label="Open incident detail">
           <ArrowUpRight size={18} aria-hidden="true" />
-        </button>
+        </a>
       </div>
       <div className="incident-row" tabIndex={0}>
         <div>
@@ -49,4 +49,3 @@ export function IncidentTable({ incident, services }: IncidentTableProps) {
     </section>
   );
 }
-

@@ -1,4 +1,5 @@
 import { Check, ShieldAlert } from "lucide-react";
+import { useState } from "react";
 import type { Recommendation } from "../types/incidents";
 
 interface RecommendationPanelProps {
@@ -6,8 +7,10 @@ interface RecommendationPanelProps {
 }
 
 export function RecommendationPanel({ recommendation }: RecommendationPanelProps) {
+  const [requestedRunbook, setRequestedRunbook] = useState<string | null>(null);
+
   return (
-    <section className="panel" aria-labelledby="recommendation-title">
+    <section className="panel" id="runbooks" aria-labelledby="recommendation-title">
       <div className="panel-heading">
         <div>
           <p className="eyebrow">Recommendation</p>
@@ -46,10 +49,11 @@ export function RecommendationPanel({ recommendation }: RecommendationPanelProps
               <dd>{action.rollback.join(" ")}</dd>
             </div>
           </dl>
-          <button className="primary-action">Request approval</button>
+          <button className="primary-action" onClick={() => setRequestedRunbook(action.runbook_id)}>
+            {requestedRunbook === action.runbook_id ? "Approval queued" : "Request approval"}
+          </button>
         </article>
       ))}
     </section>
   );
 }
-

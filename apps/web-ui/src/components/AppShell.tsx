@@ -6,10 +6,10 @@ interface AppShellProps {
 }
 
 const navItems = [
-  { label: "Incidents", icon: Activity },
-  { label: "Topology", icon: GitBranch },
-  { label: "Runbooks", icon: ShieldCheck },
-  { label: "Models", icon: DatabaseZap }
+  { label: "Incidents", icon: Activity, href: "#incidents" },
+  { label: "Topology", icon: GitBranch, href: "#topology" },
+  { label: "Runbooks", icon: ShieldCheck, href: "#runbooks" },
+  { label: "Models", icon: DatabaseZap, href: "#models" }
 ];
 
 export function AppShell({ children }: AppShellProps) {
@@ -24,10 +24,10 @@ export function AppShell({ children }: AppShellProps) {
           {navItems.map((item, index) => {
             const Icon = item.icon;
             return (
-              <button className={index === 0 ? "nav-item nav-item--active" : "nav-item"} key={item.label}>
+              <a className={index === 0 ? "nav-item nav-item--active" : "nav-item"} href={item.href} key={item.label}>
                 <Icon aria-hidden="true" size={18} />
                 <span>{item.label}</span>
-              </button>
+              </a>
             );
           })}
         </nav>
@@ -36,4 +36,3 @@ export function AppShell({ children }: AppShellProps) {
     </div>
   );
 }
-

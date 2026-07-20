@@ -16,7 +16,7 @@ const evidenceLabels: Record<keyof EvidenceScore, string> = {
 
 export function RCAPanel({ candidates }: RCAPanelProps) {
   return (
-    <section className="panel panel--sticky" aria-labelledby="rca-title">
+    <section className="panel panel--sticky" id="rca" aria-labelledby="rca-title">
       <div className="panel-heading">
         <div>
           <p className="eyebrow">RCA Ranking</p>
@@ -56,4 +56,3 @@ export function RCAPanel({ candidates }: RCAPanelProps) {
     </section>
   );
 }
-

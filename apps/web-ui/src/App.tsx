@@ -26,6 +26,18 @@ const degradedSignals: TelemetrySignal[] = [
   { name: "db_pool_utilization", value: "96%", baseline: "< 70%", state: "degraded" }
 ];
 
+function localOpsState(scenario: OpsState["scenario"]): OpsState {
+  const active = scenario !== "healthy";
+  return {
+    scenario,
+    active,
+    services: active ? serviceHealth : healthyServiceHealth,
+    signals: active ? degradedSignals : healthySignals,
+    incident: active ? demoIncident : null,
+    telemetry_source: "incident_drill"
+  };
+}
+
 async function fetchOpsState(): Promise<OpsState | null> {
   if (!apiUrl) return null;
   const response = await fetch(`${apiUrl}/ops/state`);
@@ -55,11 +67,11 @@ async function updateScenario(scenario: OpsState["scenario"]): Promise<OpsState 
 }
 
 export function App() {
-  const [incident, setIncident] = useState<Incident | null>(apiUrl ? null : demoIncident);
-  const [services, setServices] = useState<ServiceHealth[]>(apiUrl ? healthyServiceHealth : serviceHealth);
-  const [signals, setSignals] = useState<TelemetrySignal[]>(apiUrl ? healthySignals : degradedSignals);
+  const [incident, setIncident] = useState<Incident | null>(null);
+  const [services, setServices] = useState<ServiceHealth[]>(healthyServiceHealth);
+  const [signals, setSignals] = useState<TelemetrySignal[]>(healthySignals);
   const [source, setSource] = useState(apiUrl ? "connecting" : "local");
-  const [scenario, setScenario] = useState<OpsState["scenario"]>(apiUrl ? "healthy" : "db_pool_saturation");
+  const [scenario, setScenario] = useState<OpsState["scenario"]>("healthy");
   const topCandidate = incident?.candidates[0] ?? null;
   const tiles = [
     { label: "Open incidents", value: incident ? "1" : "0", detail: incident ? `${incident.affected_services.length} services affected` : "system healthy", icon: AlertTriangle },
@@ -97,13 +109,13 @@ export function App() {
 
   const changeScenario = (nextScenario: OpsState["scenario"]) => {
     updateScenario(nextScenario).then((state) => {
-      if (state) applyOpsState(state);
+      applyOpsState(state ?? localOpsState(nextScenario));
     });
   };
 
   return (
     <AppShell>
-      <header className="topbar">
+      <header className="topbar" id="overview">
         <div>
           <p className="eyebrow">Live Incident Workspace</p>
           <h1>Operational intelligence</h1>
@@ -121,11 +133,11 @@ export function App() {
           <h2>{scenario === "healthy" ? "Checkout path is healthy" : "MongoDB pool saturation is active"}</h2>
         </div>
         <div className="demo-controls__actions">
-          <button type="button" className="control-button control-button--danger" onClick={() => changeScenario("db_pool_saturation")}>
+          <button type="button" className="control-button control-button--danger" onClick={() => changeScenario("db_pool_saturation")} disabled={scenario !== "healthy"}>
             <PlayCircle aria-hidden="true" size={18} />
             Trigger DB Saturation
           </button>
-          <button type="button" className="control-button" onClick={() => changeScenario("healthy")}>
+          <button type="button" className="control-button" onClick={() => changeScenario("healthy")} disabled={scenario === "healthy"}>
             <CheckCircle2 aria-hidden="true" size={18} />
             Resolve
           </button>
@@ -161,7 +173,7 @@ export function App() {
         })}
       </section>
 
-      <section className="panel telemetry-panel" aria-labelledby="telemetry-title">
+      <section className="panel telemetry-panel" id="topology" aria-labelledby="telemetry-title">
         <div className="panel-heading">
           <div>
             <p className="eyebrow">Telemetry Parameters</p>
@@ -190,7 +202,7 @@ export function App() {
               <RecommendationPanel recommendation={incident.recommendation} />
             </>
           ) : (
-            <section className="panel" aria-labelledby="healthy-title">
+            <section className="panel" id="incidents" aria-labelledby="healthy-title">
               <div className="panel-heading">
                 <div>
                   <p className="eyebrow">Incident Queue</p>
@@ -223,7 +235,7 @@ export function App() {
           {incident ? (
             <RCAPanel candidates={incident.candidates} />
           ) : (
-            <section className="panel panel--sticky">
+            <section className="panel panel--sticky" id="models">
               <p className="eyebrow">Root Cause Evidence</p>
               <h2>Idle until telemetry crosses threshold</h2>
               <p className="summary-copy">Trigger DB Saturation to push latency, error rate, and pool utilization beyond baseline.</p>
