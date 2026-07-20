@@ -30,4 +30,9 @@ if [ "$token_status" -ne 1 ] || [ "$assignment_status" -ne 1 ]; then
   exit 1
 fi
 
+if git grep -n -I -E '(admin123|password123|changeme|changeit)' -- . ':!docs/source/*.docx' ':!.env.example' ':!scripts/security_check.sh'; then
+  echo "Weak placeholder credential found outside approved templates."
+  exit 1
+fi
+
 echo "security-check-ok"
