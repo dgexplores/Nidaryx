@@ -1,0 +1,34 @@
+[
+  {
+    "runbook_id": "rb-investigate-db-pool",
+    "title": "Inspect database connection pool pressure",
+    "recommendation_type": "investigation",
+    "action_identifier": null,
+    "parameters_schema": {},
+    "preconditions": ["Incident has database latency or saturation evidence."],
+    "verification": ["Pool utilization and query latency are reviewed."],
+    "rollback": [],
+    "enabled": true
+  },
+  {
+    "runbook_id": "rb-demo-reduce-load",
+    "title": "Reduce controlled demo load by percentage",
+    "recommendation_type": "remediation",
+    "action_identifier": "demo.load.reduce",
+    "parameters_schema": {
+      "type": "object",
+      "required": ["percentage"],
+      "properties": {
+        "percentage": { "type": "integer", "minimum": 1, "maximum": 90 }
+      }
+    },
+    "preconditions": [
+      "Environment is development or demo.",
+      "Incident has active saturation evidence."
+    ],
+    "verification": ["Request rate returns within baseline band."],
+    "rollback": ["Restore the previous load-generator rate."],
+    "enabled": true
+  }
+]
+

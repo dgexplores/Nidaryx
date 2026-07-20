@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: "aegisops-python-services"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - api-gateway:8080
+          - demo-api:8080
+          - order-service:8080
+          - feature-service:8080
+          - anomaly-service:8080
+          - incident-service:8080
+          - rca-service:8080
+          - memory-service:8080
+          - recommendation-service:8080
+          - remediation-service:8080
+
+  - job_name: "prometheus"
+    static_configs:
+      - targets: ["prometheus:9090"]
+
