@@ -8,7 +8,7 @@ import { RCAPanel } from "./components/RCAPanel";
 import { RecommendationPanel } from "./components/RecommendationPanel";
 import { StatusBadge } from "./components/StatusBadge";
 import { demoIncident, healthyServiceHealth, serviceHealth } from "./data/demoIncident";
-import type { Incident, OpsState, ServiceHealth, TelemetrySignal } from "./types/incidents";
+import type { Incident, OpsState, RemediationApprovalResult, ServiceHealth, TelemetrySignal } from "./types/incidents";
 
 const apiUrl = import.meta.env.VITE_NIDARYX_API_URL?.replace(/\/$/, "");
 
@@ -66,6 +66,49 @@ async function updateScenario(scenario: OpsState["scenario"]): Promise<OpsState 
   return response.ok ? response.json() : null;
 }
 
+async function approveRunbook(incidentId: string, runbookId: string): Promise<RemediationApprovalResult> {
+  if (!apiUrl) {
+    return {
+      approval: {
+        id: `local-${runbookId}`,
+        incident_id: incidentId,
+        actor: "local-showcase",
+        role: "approver",
+        decision: "approved",
+        action_identifier: "traffic.load.reduce",
+        request: { runbook_id: runbookId, parameters: { percentage: 25 } },
+        result: { mode: "local_dry_run" },
+        timestamp: new Date().toISOString()
+      },
+      execution: {
+        id: `local-${runbookId}-execute`,
+        incident_id: incidentId,
+        actor: "local-showcase",
+        role: "approver",
+        decision: "executed",
+        action_identifier: "traffic.load.reduce",
+        request: { runbook_id: runbookId, parameters: { percentage: 25 } },
+        result: { mode: "local_dry_run", executed: false },
+        timestamp: new Date().toISOString()
+      },
+      audit_trail: []
+    };
+  }
+  const response = await fetch(`${apiUrl}/incidents/${incidentId}/remediation/approve`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({
+      runbook_id: runbookId,
+      actor: "showcase-operator",
+      role: "approver",
+      parameters: { percentage: 25 },
+      execute: true
+    })
+  });
+  if (!response.ok) throw new Error("approval failed");
+  return response.json();
+}
+
 export function App() {
   const [incident, setIncident] = useState<Incident | null>(null);
   const [services, setServices] = useState<ServiceHealth[]>(healthyServiceHealth);
@@ -80,12 +123,12 @@ export function App() {
     { label: "Telemetry", value: incident ? "partial" : "live", detail: incident ? "trace present, logs pending" : "all services nominal", icon: Activity }
   ];
 
-  const applyOpsState = (state: OpsState) => {
+  const applyOpsState = (state: OpsState, nextSource = "api") => {
     setScenario(state.scenario);
     setServices(state.services);
     setSignals(state.signals);
     setIncident(state.incident);
-    setSource("api");
+    setSource(nextSource);
   };
 
   useEffect(() => {
@@ -109,7 +152,11 @@ export function App() {
 
   const changeScenario = (nextScenario: OpsState["scenario"]) => {
     updateScenario(nextScenario).then((state) => {
-      applyOpsState(state ?? localOpsState(nextScenario));
+      if (state) {
+        applyOpsState(state);
+      } else {
+        applyOpsState(localOpsState(nextScenario), "local");
+      }
     });
   };
 
@@ -199,7 +246,7 @@ export function App() {
             <>
               <IncidentTable incident={incident} services={services} />
               <EvidenceTimeline events={incident.timeline} />
-              <RecommendationPanel recommendation={incident.recommendation} />
+              <RecommendationPanel recommendation={incident.recommendation} incidentId={incident.id} onRequestApproval={(runbookId) => approveRunbook(incident.id, runbookId)} />
             </>
           ) : (
             <section className="panel" id="incidents" aria-labelledby="healthy-title">

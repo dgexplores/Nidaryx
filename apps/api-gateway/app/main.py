@@ -2,11 +2,13 @@ from __future__ import annotations
 
 import os
 
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, HTTPException, Response
 from fastapi.middleware.cors import CORSMiddleware
 
+from nidaryx_contracts import RemediationDecision, Role, to_primitive
 from nidaryx_common.settings import ServiceSettings
-from nidaryx_intelligence.demo_data import sample_incident_payload
+from nidaryx_intelligence.demo_data import default_runbooks, sample_incident_payload
+from nidaryx_intelligence.remediation import Approval, RemediationPolicy, RunbookRegistry
 from nidaryx_telemetry.prometheus import PrometheusClient, PrometheusQuery, TelemetryQueryError
 
 settings = ServiceSettings.from_env("api-gateway")
@@ -190,6 +192,42 @@ def incident_detail(incident_id: str) -> dict[str, object]:
     incident = sample_incident_payload()
     incident["id"] = incident_id
     return incident
+
+
+@app.post("/incidents/{incident_id}/remediation/approve")
+def approve_remediation(incident_id: str, payload: dict[str, object]) -> dict[str, object]:
+    runbook_id = str(payload.get("runbook_id", ""))
+    actor = str(payload.get("actor", "showcase-operator"))
+    parameters = payload.get("parameters", {"percentage": 25})
+    if not isinstance(parameters, dict):
+        raise HTTPException(status_code=422, detail="parameters must be an object")
+    try:
+        role = Role(str(payload.get("role", Role.APPROVER.value)))
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail="unknown role") from exc
+
+    policy = RemediationPolicy(RunbookRegistry(default_runbooks()))
+    try:
+        approval = policy.approve(
+            Approval(
+                incident_id=incident_id,
+                runbook_id=runbook_id,
+                actor=actor,
+                role=role,
+                parameters=parameters,
+            )
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    audit_trail = [approval]
+    response: dict[str, object] = {"approval": to_primitive(approval)}
+    if approval.decision is RemediationDecision.APPROVED and payload.get("execute", True):
+        execution = policy.execute(approval)
+        audit_trail.append(execution)
+        response["execution"] = to_primitive(execution)
+    response["audit_trail"] = to_primitive(audit_trail)
+    return response
 
 
 @app.get("/models")

@@ -51,7 +51,9 @@ The UI can run in local telemetry mode if the API is sleeping.
 5. Show latency, error rate, and DB pool utilization crossing baseline.
 6. Open RCA panel: mongodb ranks first.
 7. Show recommendation: investigation before approval-gated remediation.
-8. Show `/ops/state` API JSON from Render.
+8. Request approval for `traffic.load.reduce`.
+9. Show the dry-run audit result: approved, executed, but no production mutation.
+10. Show `/ops/state` API JSON from Render.
 
 ## Live Telemetry Mode
 

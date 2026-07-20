@@ -524,6 +524,27 @@ meter {
   text-transform: uppercase;
 }
 
+.audit-result {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  border: 1px solid var(--healthy);
+  padding: 12px;
+  background: #102116;
+}
+
+.audit-result span,
+.audit-result p {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+
+.audit-result strong {
+  color: var(--healthy);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

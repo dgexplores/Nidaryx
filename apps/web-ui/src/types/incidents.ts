@@ -82,3 +82,23 @@ export interface OpsState {
   telemetry_source?: "prometheus" | "incident_drill";
   telemetry_error?: string;
 }
+
+export type RemediationDecision = "pending" | "approved" | "rejected" | "executed" | "verified" | "failed";
+
+export interface AuditRecord {
+  id: string;
+  incident_id: string;
+  actor: string;
+  role: "viewer" | "investigator" | "approver" | "administrator";
+  decision: RemediationDecision;
+  action_identifier: string;
+  request: { runbook_id: string; parameters: Record<string, unknown> };
+  result: Record<string, unknown>;
+  timestamp: string;
+}
+
+export interface RemediationApprovalResult {
+  approval: AuditRecord;
+  execution?: AuditRecord;
+  audit_trail: AuditRecord[];
+}

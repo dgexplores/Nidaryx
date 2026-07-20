@@ -1,13 +1,27 @@
 import { Check, ShieldAlert } from "lucide-react";
 import { useState } from "react";
-import type { Recommendation } from "../types/incidents";
+import type { Recommendation, RemediationApprovalResult } from "../types/incidents";
 
 interface RecommendationPanelProps {
   recommendation: Recommendation;
+  incidentId: string;
+  onRequestApproval: (runbookId: string) => Promise<RemediationApprovalResult>;
 }
 
-export function RecommendationPanel({ recommendation }: RecommendationPanelProps) {
+export function RecommendationPanel({ recommendation, incidentId, onRequestApproval }: RecommendationPanelProps) {
   const [requestedRunbook, setRequestedRunbook] = useState<string | null>(null);
+  const [result, setResult] = useState<RemediationApprovalResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const requestApproval = async (runbookId: string) => {
+    setRequestedRunbook(runbookId);
+    setError(null);
+    try {
+      setResult(await onRequestApproval(runbookId));
+    } catch {
+      setError("Approval API unavailable");
+    }
+  };
 
   return (
     <section className="panel" id="runbooks" aria-labelledby="recommendation-title">
@@ -49,11 +63,18 @@ export function RecommendationPanel({ recommendation }: RecommendationPanelProps
               <dd>{action.rollback.join(" ")}</dd>
             </div>
           </dl>
-          <button className="primary-action" onClick={() => setRequestedRunbook(action.runbook_id)}>
-            {requestedRunbook === action.runbook_id ? "Approval queued" : "Request approval"}
+          <button className="primary-action" onClick={() => requestApproval(action.runbook_id)} disabled={!action.action_identifier}>
+            {!action.action_identifier ? "Investigation only" : requestedRunbook === action.runbook_id ? "Approval requested" : "Request approval"}
           </button>
         </article>
       ))}
+      {(result || error) && (
+        <div className="audit-result" role="status">
+          <span>Incident {incidentId}</span>
+          <strong>{result?.execution?.decision ?? result?.approval.decision ?? error}</strong>
+          {result?.execution ? <p>Dry-run action: {result.execution.action_identifier}</p> : null}
+        </div>
+      )}
     </section>
   );
 }
