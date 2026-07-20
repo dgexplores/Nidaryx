@@ -15,7 +15,7 @@ class RemediationPolicyTests(unittest.TestCase):
         record = self.policy.approve(
             Approval(
                 incident_id="incident-1",
-                runbook_id="rb-demo-reduce-load",
+                runbook_id="rb-reduce-ingress-load",
                 actor="viewer",
                 role=Role.VIEWER,
                 parameters={"percentage": 25},
@@ -29,7 +29,7 @@ class RemediationPolicyTests(unittest.TestCase):
         record = self.policy.approve(
             Approval(
                 incident_id="incident-1",
-                runbook_id="rb-demo-reduce-load",
+                runbook_id="rb-reduce-ingress-load",
                 actor="approver",
                 role=Role.APPROVER,
                 parameters={},
@@ -43,7 +43,7 @@ class RemediationPolicyTests(unittest.TestCase):
         approved = self.policy.approve(
             Approval(
                 incident_id="incident-1",
-                runbook_id="rb-demo-reduce-load",
+                runbook_id="rb-reduce-ingress-load",
                 actor="approver",
                 role=Role.APPROVER,
                 parameters={"percentage": 25},
@@ -58,4 +58,3 @@ class RemediationPolicyTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

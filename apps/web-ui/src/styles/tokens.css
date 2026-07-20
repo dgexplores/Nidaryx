@@ -208,6 +208,36 @@ button:focus-visible,
   margin-bottom: 18px;
 }
 
+.telemetry-panel {
+  margin-bottom: 18px;
+}
+
+.signal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.signal-card {
+  display: grid;
+  gap: 8px;
+  min-height: 120px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  background: var(--muted);
+}
+
+.signal-card span,
+.signal-card p {
+  margin: 0;
+  color: var(--muted-foreground);
+}
+
+.signal-card strong {
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 24px;
+}
+
 .metric-tile,
 .panel,
 .candidate,
@@ -511,6 +541,7 @@ meter {
   }
 
   .metric-grid,
+  .signal-grid,
   .content-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -538,6 +569,7 @@ meter {
   }
 
   .metric-grid,
+  .signal-grid,
   .content-grid {
     grid-template-columns: 1fr;
   }

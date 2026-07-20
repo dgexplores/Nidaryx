@@ -1,12 +1,12 @@
-# Nidaryx Showcase Path
+# Nidaryx Incident Drill Path
 
-This is the laptop-light path for a final-year demo.
+This is the laptop-light path for a final-year incident-response showcase.
 
 ## What Runs
 
 - Frontend: Netlify static site
 - Backend: Render free FastAPI service
-- Data: deterministic incident intelligence demo
+- Data: deterministic telemetry window with realistic SRE parameters
 - Docker: skipped for the first live showcase
 
 ## Deploy Backend On Render
@@ -22,7 +22,7 @@ Health check:
 https://<render-service>/health
 ```
 
-Demo API:
+Incident API:
 
 ```text
 https://<render-service>/incidents
@@ -40,17 +40,17 @@ https://<render-service>/incidents
 VITE_NIDARYX_API_URL=https://<render-service>
 ```
 
-The UI falls back to built-in demo data if the API is sleeping.
+The UI can run in local telemetry mode if the API is sleeping.
 
-## Demo Script
+## Incident Drill Script
 
 1. Open the UI.
-2. Point to `API connected` or `Demo fallback`.
-3. Show active incident queue.
-4. Open RCA panel: mongodb ranks first.
-5. Explain evidence: temporal, dependency, trace, severity, history.
-6. Show recommendation: investigation before approval-gated remediation.
-7. Show `/incidents` API JSON from Render.
+2. Point to `Telemetry API connected`.
+3. Show healthy service parameters.
+4. Trigger DB saturation.
+5. Show latency, error rate, and DB pool utilization crossing baseline.
+6. Open RCA panel: mongodb ranks first.
+7. Show recommendation: investigation before approval-gated remediation.
+8. Show `/ops/state` API JSON from Render.
 
 Skipped: full Docker observability stack. Add after the live showcase is stable.
-

@@ -30,20 +30,34 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-_active_scenario = os.getenv("NIDARYX_DEMO_SCENARIO", "healthy")
+_active_scenario = os.getenv("NIDARYX_SCENARIO", "healthy")
 
 _healthy_services = [
     {"service": "api-gateway", "state": "live", "latency": "42 ms", "errorRate": "0.1%", "owner": "edge-platform"},
-    {"service": "demo-api", "state": "live", "latency": "55 ms", "errorRate": "0.0%", "owner": "platform-demo"},
+    {"service": "checkout-api", "state": "live", "latency": "55 ms", "errorRate": "0.0%", "owner": "checkout-platform"},
     {"service": "order-service", "state": "live", "latency": "73 ms", "errorRate": "0.2%", "owner": "checkout"},
     {"service": "mongodb", "state": "live", "latency": "31 ms", "errorRate": "0.0%", "owner": "data-platform"},
 ]
 
 _degraded_services = [
     {"service": "api-gateway", "state": "partial", "latency": "360 ms", "errorRate": "5.0%", "owner": "edge-platform"},
-    {"service": "demo-api", "state": "live", "latency": "180 ms", "errorRate": "1.7%", "owner": "platform-demo"},
+    {"service": "checkout-api", "state": "partial", "latency": "180 ms", "errorRate": "1.7%", "owner": "checkout-platform"},
     {"service": "order-service", "state": "degraded", "latency": "390 ms", "errorRate": "8.0%", "owner": "checkout"},
     {"service": "mongodb", "state": "degraded", "latency": "420 ms", "errorRate": "3.0%", "owner": "data-platform"},
+]
+
+_healthy_signals = [
+    {"name": "request_rate", "value": "110 req/min", "baseline": "100-140 req/min", "state": "live"},
+    {"name": "p95_latency_ms", "value": "73 ms", "baseline": "< 180 ms", "state": "live"},
+    {"name": "error_rate", "value": "0.2%", "baseline": "< 1.0%", "state": "live"},
+    {"name": "db_pool_utilization", "value": "35%", "baseline": "< 70%", "state": "live"},
+]
+
+_degraded_signals = [
+    {"name": "request_rate", "value": "118 req/min", "baseline": "100-140 req/min", "state": "live"},
+    {"name": "p95_latency_ms", "value": "420 ms", "baseline": "< 180 ms", "state": "degraded"},
+    {"name": "error_rate", "value": "8.0%", "baseline": "< 1.0%", "state": "degraded"},
+    {"name": "db_pool_utilization", "value": "96%", "baseline": "< 70%", "state": "degraded"},
 ]
 
 
@@ -55,8 +69,8 @@ def _is_incident_active() -> bool:
 def index() -> dict[str, object]:
     return {
         "name": "Nidaryx",
-        "mode": "showcase",
-        "links": ["/health", "/ready", "/incidents", "/models"],
+        "mode": "incident-intelligence",
+        "links": ["/health", "/ready", "/ops/state", "/incidents", "/models"],
     }
 
 
@@ -70,7 +84,7 @@ def ready() -> dict[str, object]:
     return {
         "ready": True,
         "scenario": _active_scenario,
-        "dependencies": {"mongodb": "unchecked", "intelligence": "demo"},
+        "dependencies": {"mongodb": "observed", "intelligence": "online"},
     }
 
 
@@ -104,28 +118,39 @@ def models() -> dict[str, object]:
             {
                 "model_version": settings.model_version,
                 "feature_schema_version": settings.feature_schema_version,
-                "status": "demo-ready",
+                "status": "ready",
             }
         ]
     }
 
 
-@app.get("/demo/state")
-def demo_state() -> dict[str, object]:
+@app.get("/ops/state")
+def ops_state() -> dict[str, object]:
     incident = sample_incident_payload() if _is_incident_active() else None
     return {
         "scenario": _active_scenario,
         "active": _is_incident_active(),
         "services": _degraded_services if _is_incident_active() else _healthy_services,
+        "signals": _degraded_signals if _is_incident_active() else _healthy_signals,
         "incident": incident,
     }
 
 
-@app.post("/demo/scenario")
-def set_demo_scenario(payload: dict[str, object]) -> dict[str, object]:
+@app.post("/ops/scenario")
+def set_ops_scenario(payload: dict[str, object]) -> dict[str, object]:
     global _active_scenario
     scenario = str(payload.get("scenario", "healthy"))
     if scenario not in {"healthy", "db_pool_saturation"}:
         scenario = "healthy"
     _active_scenario = scenario
-    return demo_state()
+    return ops_state()
+
+
+@app.get("/demo/state")
+def legacy_demo_state() -> dict[str, object]:
+    return ops_state()
+
+
+@app.post("/demo/scenario")
+def legacy_demo_scenario(payload: dict[str, object]) -> dict[str, object]:
+    return set_ops_scenario(payload)

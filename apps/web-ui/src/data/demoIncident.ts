@@ -5,7 +5,7 @@ export const demoIncident: Incident = {
   status: "open",
   severity: "critical",
   opened_at: "2026-07-20T09:00:00Z",
-  affected_services: ["api-gateway", "demo-api", "order-service", "mongodb"],
+  affected_services: ["api-gateway", "checkout-api", "order-service", "mongodb"],
   candidates: [
     {
       entity: "mongodb",
@@ -67,11 +67,11 @@ export const demoIncident: Incident = {
     ],
     actions: [
       {
-        runbook_id: "rb-demo-reduce-load",
-        title: "Reduce controlled demo load by percentage",
+        runbook_id: "rb-reduce-ingress-load",
+        title: "Reduce ingress load by percentage",
         recommendation_type: "remediation",
-        action_identifier: "demo.load.reduce",
-        preconditions: ["Environment is development or demo.", "Incident has active saturation evidence."],
+        action_identifier: "traffic.load.reduce",
+        preconditions: ["Environment has an approved traffic-control policy.", "Incident has active saturation evidence."],
         verification: ["Request rate returns within baseline band."],
         rollback: ["Restore the previous load-generator rate."],
         enabled: true
@@ -107,14 +107,14 @@ export const demoIncident: Incident = {
 
 export const serviceHealth: ServiceHealth[] = [
   { service: "api-gateway", state: "partial", latency: "360 ms", errorRate: "5.0%", owner: "edge-platform" },
-  { service: "demo-api", state: "live", latency: "180 ms", errorRate: "1.7%", owner: "platform-demo" },
+  { service: "checkout-api", state: "partial", latency: "180 ms", errorRate: "1.7%", owner: "checkout-platform" },
   { service: "order-service", state: "degraded", latency: "390 ms", errorRate: "8.0%", owner: "checkout" },
   { service: "mongodb", state: "degraded", latency: "420 ms", errorRate: "3.0%", owner: "data-platform" }
 ];
 
 export const healthyServiceHealth: ServiceHealth[] = [
   { service: "api-gateway", state: "live", latency: "42 ms", errorRate: "0.1%", owner: "edge-platform" },
-  { service: "demo-api", state: "live", latency: "55 ms", errorRate: "0.0%", owner: "platform-demo" },
+  { service: "checkout-api", state: "live", latency: "55 ms", errorRate: "0.0%", owner: "checkout-platform" },
   { service: "order-service", state: "live", latency: "73 ms", errorRate: "0.2%", owner: "checkout" },
   { service: "mongodb", state: "live", latency: "31 ms", errorRate: "0.0%", owner: "data-platform" }
 ];

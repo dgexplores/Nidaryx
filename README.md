@@ -7,7 +7,7 @@ This repository is built from the v2.0 documentation pack in `docs/source/`. The
 ## Architecture
 
 ```text
-Demo services -> metrics/logs/traces -> feature-service -> anomaly-service
+Application services -> metrics/logs/traces -> feature-service -> anomaly-service
        -> incident-service -> rca-service -> memory-service
        -> recommendation-service -> remediation-service -> audit
 
@@ -20,7 +20,7 @@ similar incidents, recommendations, feedback, approvals, and audit.
 ```text
 apps/
   api-gateway/       Incident-facing API facade
-  demo-api/          Demo traffic/fault API
+  demo-api/          Checkout-path traffic/fault service for incident drills
   order-service/     Example business service
   web-ui/            React/Vite incident workflow UI
 services/
@@ -45,7 +45,7 @@ docs/                Product and engineering documentation
 
 ## Local Development
 
-Showcase mode:
+Incident drill mode:
 
 ```bash
 npm run demo
@@ -70,7 +70,7 @@ Use the laptop-light path first:
 - Frontend: Netlify static site using `netlify.toml`
 - Guide: `docs/showcase.md`
 
-The UI reads `VITE_NIDARYX_API_URL` when deployed and falls back to demo data if the API is asleep.
+The UI reads `VITE_NIDARYX_API_URL` when deployed and can run in local telemetry mode if the API is unavailable.
 
 The dependency-free domain tests can run before installing third-party packages:
 

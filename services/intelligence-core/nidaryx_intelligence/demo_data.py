@@ -28,8 +28,8 @@ def default_graph() -> DependencyGraph:
     return DependencyGraph(
         [
             ServiceDependency(upstream="mongodb", downstream="order-service", kind="database"),
-            ServiceDependency(upstream="order-service", downstream="demo-api", kind="http"),
-            ServiceDependency(upstream="demo-api", downstream="api-gateway", kind="http"),
+            ServiceDependency(upstream="order-service", downstream="checkout-api", kind="http"),
+            ServiceDependency(upstream="checkout-api", downstream="api-gateway", kind="http"),
         ]
     )
 
@@ -48,17 +48,17 @@ def default_runbooks() -> list[RunbookAction]:
             enabled=True,
         ),
         RunbookAction(
-            runbook_id="rb-demo-reduce-load",
-            title="Reduce controlled demo load by percentage",
+            runbook_id="rb-reduce-ingress-load",
+            title="Reduce ingress load by percentage",
             recommendation_type=RecommendationType.REMEDIATION,
-            action_identifier="demo.load.reduce",
+            action_identifier="traffic.load.reduce",
             parameters_schema={
                 "type": "object",
                 "required": ["percentage"],
                 "properties": {"percentage": {"type": "integer"}},
             },
             preconditions=(
-                "Environment is development or demo.",
+                "Environment has an approved traffic-control policy.",
                 "Incident has active saturation evidence.",
             ),
             verification=("Request rate returns within baseline band.",),
@@ -159,7 +159,7 @@ def sample_incident() -> Incident:
         historical,
         anomalies,
         confirmed_cause="mongodb",
-        resolution="Reduced connection-pool pressure and scaled the demo database.",
+        resolution="Reduced connection-pool pressure and scaled the database tier.",
         outcome="Latency returned to baseline within 6 minutes.",
     )
     similar = memory.find_similar(incident, anomalies)
@@ -176,4 +176,3 @@ def sample_incident() -> Incident:
 
 def sample_incident_payload() -> dict[str, object]:
     return to_primitive(sample_incident())
-

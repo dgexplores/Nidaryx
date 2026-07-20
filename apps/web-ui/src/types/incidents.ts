@@ -66,9 +66,17 @@ export interface ServiceHealth {
   owner: string;
 }
 
-export interface DemoState {
+export interface TelemetrySignal {
+  name: string;
+  value: string;
+  baseline: string;
+  state: DataState;
+}
+
+export interface OpsState {
   scenario: "healthy" | "db_pool_saturation";
   active: boolean;
   services: ServiceHealth[];
+  signals: TelemetrySignal[];
   incident: Incident | null;
 }

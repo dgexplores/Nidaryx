@@ -53,9 +53,8 @@ class MemoryRecommendationTests(unittest.TestCase):
 
         self.assertEqual(similar[0].incident_id, "incident-history")
         self.assertIn("Inspect telemetry for mongodb", recommendation.investigation_steps[0])
-        self.assertEqual(recommendation.actions[0].action_identifier, "demo.load.reduce")
+        self.assertEqual(recommendation.actions[0].action_identifier, "traffic.load.reduce")
 
 
 if __name__ == "__main__":
     unittest.main()
-
