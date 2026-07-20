@@ -66,3 +66,9 @@ export interface ServiceHealth {
   owner: string;
 }
 
+export interface DemoState {
+  scenario: "healthy" | "db_pool_saturation";
+  active: boolean;
+  services: ServiceHealth[];
+  incident: Incident | null;
+}

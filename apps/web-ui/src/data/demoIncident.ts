@@ -112,3 +112,9 @@ export const serviceHealth: ServiceHealth[] = [
   { service: "mongodb", state: "degraded", latency: "420 ms", errorRate: "3.0%", owner: "data-platform" }
 ];
 
+export const healthyServiceHealth: ServiceHealth[] = [
+  { service: "api-gateway", state: "live", latency: "42 ms", errorRate: "0.1%", owner: "edge-platform" },
+  { service: "demo-api", state: "live", latency: "55 ms", errorRate: "0.0%", owner: "platform-demo" },
+  { service: "order-service", state: "live", latency: "73 ms", errorRate: "0.2%", owner: "checkout" },
+  { service: "mongodb", state: "live", latency: "31 ms", errorRate: "0.0%", owner: "data-platform" }
+];

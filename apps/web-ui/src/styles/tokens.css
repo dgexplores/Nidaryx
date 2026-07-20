@@ -136,6 +136,46 @@ button:focus-visible,
   color: var(--muted-foreground);
 }
 
+.demo-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.demo-controls h2 {
+  margin: 0;
+}
+
+.demo-controls__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.control-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  border: 1px solid var(--border);
+  padding: 0 12px;
+  background: var(--muted);
+  color: var(--foreground);
+  cursor: pointer;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.control-button--danger {
+  border-color: var(--critical);
+  color: var(--critical);
+}
+
 .eyebrow {
   margin: 0 0 8px;
   color: var(--accent);
@@ -491,6 +531,7 @@ meter {
 
   .topbar,
   .topbar__state,
+  .demo-controls,
   .panel-heading {
     align-items: flex-start;
     flex-direction: column;
