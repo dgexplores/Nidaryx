@@ -15,6 +15,30 @@ Grafana shows raw telemetry. The custom web UI handles incident workflow, RCA ev
 similar incidents, recommendations, feedback, approvals, and audit.
 ```
 
+## Access Links
+
+Current known links from the pause checkpoint:
+
+```text
+Local frontend: http://127.0.0.1:5173
+Local API docs: http://127.0.0.1:8000/docs
+Render backend: https://nidaryx.onrender.com
+Render health:  https://nidaryx.onrender.com/health
+Vercel frontend: add the production URL from the Vercel project dashboard
+```
+
+The deployed frontend should use this environment variable:
+
+```text
+VITE_NIDARYX_API_URL=https://nidaryx.onrender.com
+```
+
+If the deployed frontend shows `Local telemetry mode`, redeploy Vercel after setting the environment variable and make sure Render has:
+
+```text
+CORS_ALLOWED_ORIGINS=https://<vercel-site>.vercel.app
+```
+
 ## Repository Layout
 
 ```text
