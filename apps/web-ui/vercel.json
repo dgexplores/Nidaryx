@@ -1,7 +1,7 @@
 {
-  "buildCommand": "npm ci && npm run web:build",
+  "buildCommand": "npm run web:build",
   "outputDirectory": "dist",
-  "installCommand": "npm ci",
+  "installCommand": "npm ci --loglevel=error",
   "rewrites": [
     {
       "source": "/(.*)",
