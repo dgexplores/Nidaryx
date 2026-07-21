@@ -4,7 +4,7 @@ This is the laptop-light path for a final-year incident-response showcase.
 
 ## What Runs
 
-- Frontend: Netlify static site
+- Frontend: Vercel static site
 - Backend: Render free FastAPI service
 - Data: deterministic telemetry window with realistic SRE parameters
 - Docker: skipped for the first live showcase
@@ -28,19 +28,41 @@ Incident API:
 https://<render-service>/incidents
 ```
 
-## Deploy Frontend On Netlify
+Known backend URL during setup:
 
-1. Create a Netlify account.
-2. New site from GitHub.
-3. Build command: `npm ci && npm run web:build`
-4. Publish directory: `apps/web-ui/dist`
-5. Add env var:
+```text
+https://nidaryx.onrender.com
+```
+
+## Deploy Frontend On Vercel
+
+1. Create a Vercel account.
+2. Import the GitHub repo.
+3. Set root directory: `apps/web-ui`
+4. Install command: `npm ci --loglevel=error`
+5. Build command: `npm run web:build`
+6. Output directory: `dist`
+7. Add env var:
 
 ```text
 VITE_NIDARYX_API_URL=https://<render-service>
 ```
 
+For the current Render backend:
+
+```text
+VITE_NIDARYX_API_URL=https://nidaryx.onrender.com
+```
+
 The UI can run in local telemetry mode if the API is sleeping.
+
+After Vercel deploys, copy the Vercel URL into Render:
+
+```text
+CORS_ALLOWED_ORIGINS=https://<vercel-site>.vercel.app
+```
+
+Redeploy Render, then redeploy Vercel.
 
 ## Incident Drill Script
 

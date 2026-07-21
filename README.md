@@ -2,7 +2,7 @@
 
 Nidaryx is an AI-assisted observability and incident-response platform for microservice environments. It turns telemetry windows, anomaly evidence, service topology, historical incidents, and approved runbooks into correlated incidents, ranked probable root causes, similar-case retrieval, and human-approved remediation workflows.
 
-This repository is built from the v2.0 documentation pack in `docs/source/`. The current implementation establishes the production-grade monorepo foundation, typed contracts, reusable intelligence core, service/API boundaries, web UI shell, Docker Compose topology, and repeatable unit tests.
+This repository is built from the v2.0 documentation pack in `docs/source/`. The current implementation establishes the production-grade monorepo foundation, typed contracts, reusable intelligence core, service/API boundaries, web UI shell, Docker Compose topology, repeatable unit tests, and a cloud-deployable incident drill.
 
 ## Architecture
 
@@ -67,10 +67,20 @@ docker compose --profile demo up --build
 Use the laptop-light path first:
 
 - Backend: Render free web service using `render.yaml`
-- Frontend: Netlify static site using `netlify.toml`
+- Frontend: Vercel static deployment using `apps/web-ui/vercel.json`
 - Guide: `docs/showcase.md`
 
-The UI reads `VITE_NIDARYX_API_URL` when deployed and can run in local telemetry mode if the API is unavailable.
+The active Render backend used during setup was:
+
+```text
+https://nidaryx.onrender.com
+```
+
+The UI reads `VITE_NIDARYX_API_URL` when deployed and can run in local telemetry mode if the API is unavailable. Set it to the Render API URL without a trailing path:
+
+```text
+VITE_NIDARYX_API_URL=https://nidaryx.onrender.com
+```
 
 To read real Prometheus metrics in `/ops/state`, set:
 
@@ -96,4 +106,4 @@ python3 -m unittest discover -s tests/unit -p "test_*.py"
 
 ## Current Milestone
 
-Phase 0/1 foundation is implemented with representative Phase 3-7 core logic. The next bounded milestones are MongoDB repositories, Prometheus-backed feature collection, FastAPI integration tests, and full Docker health checks.
+Phase 0/1 foundation is implemented with representative Phase 3-7 core logic. The showcase path now demonstrates healthy telemetry, controlled DB saturation, anomaly/RCA ranking, recommendations, approval-gated remediation, and dry-run audit output. See `docs/project-status.md` for the pause handoff and next steps.
